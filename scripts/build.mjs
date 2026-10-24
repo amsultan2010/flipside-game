@@ -1,7 +1,7 @@
 // Builds the game into one self-contained page: dist/index.html.
 // It stitches src/page.html (markup and styles) and src/game.js (the game), and inlines the surface maths,
 // the puzzle logic and the level data where game.js has the /*SURF*/, /*LOGIC*/ and /*LEVELS*/ markers.
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, cpSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -19,22 +19,32 @@ const game = read('src/game.js')
 
 // page.html is a fragment: everything up to </style> belongs in <head>, the rest in <body>
 const cut = page.indexOf('</style>') + '</style>'.length;
-const favicon = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 54 60"><path d="M27 8L49 20.5 27 33 5 20.5z" fill="#ffe9da"/><path d="M5 20.5L27 33v24L5 44.5z" fill="#f5bccf"/><path d="M49 20.5L27 33v24l22-12.5z" fill="#8ea8ee"/><path d="M27 1L36 13.5 27 18.5 18 13.5z" fill="#5fcfbf"/></svg>');
 const html = `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="description" content="Flipside: a calm puzzle game about rolling a ball across one-sided worlds like Möbius strips, knots and Klein bottles.">
 <meta name="theme-color" content="#eef8e8">
-<link rel="icon" href="${favicon}">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Flipside">
+<!-- Vercel Web Analytics: queue calls until the script loads -->
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
 ${page.slice(0, cut).trim()}
 </head>
 <body>
 ${page.slice(cut).trim()}
 ${game.trim()}
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
 `;
 mkdirSync(join(root, 'dist'), { recursive: true });
+// icons, manifest and anything else in public/ are served as they are
+cpSync(join(root, 'public'), join(root, 'dist'), { recursive: true });
 writeFileSync(join(root, 'dist/index.html'), html);
 console.log(`dist/index.html  ${(html.length / 1024).toFixed(0)} KB, ${levels.length} levels`);

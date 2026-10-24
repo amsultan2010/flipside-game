@@ -9,6 +9,8 @@ const lerp = (a, b, t) => a + (b - a) * t;
 const mod = (a, n) => ((a % n) + n) % n;
 const ease = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
 const coarse = matchMedia('(pointer: coarse)').matches;
+// Vercel Web Analytics custom events (page views are counted automatically; custom events need a Pro plan)
+const track = (name, data) => { try { window.va && window.va('event', { name, data }); } catch (_) {} };
 const Y = new V3(0, 1, 0);
 const col = c => c instanceof THREE.Color ? c.clone() : new THREE.Color(c);
 
@@ -397,7 +399,7 @@ function startLevel(n, { demo = false } = {}) {
   CAM.az = CAM.tAz = ballAz() + 0.5; CAM.el = CAM.tEl = 0.62; CAM.user = 0; CAM.zoom = 1; CAM.look = G.center.clone(); G.intro = demo ? 0 : 1.6;
   if (!demo) {
     $('hT').innerHTML = `${G.ch.num} · <i>${lv.kk}</i>`; $('hS').textContent = G.ch.name; $('hP').textContent = lv.par; syncMoves();
-    SAVE.last = n; writeSave(); G.pendingHint = null;
+    SAVE.last = n; writeSave(); G.pendingHint = null; track('level_start', { level: n + 1, chapter: G.ch.name });
     if (G.cardCh !== lv.ch) { G.cardCh = lv.ch; showHint(''); G.pendingHint = G.ch.hints[lv.kk - 1] || ''; showCard(); } else showHint(G.ch.hints[lv.kk - 1] || '');
   }
 }
@@ -501,6 +503,7 @@ function win() {
   G.won = true;
   if (G.demo) { setTimeout(() => { if (G.demo) startLevel(DEMO, { demo: true }); }, 1800); return; }
   AU.win();
+  track('level_complete', { level: G.lv.n + 1, chapter: G.ch.name, moves: G.moves, par: G.lv.par, hints: G.hints || 0, perfect: G.moves <= G.lv.par });
   const n = G.lv.n, best = SAVE.solved[n]; if (best == null || G.moves < best) SAVE.solved[n] = G.moves; writeSave();
   setTimeout(() => {
     if (!G.won || G.screen !== 'play') return;

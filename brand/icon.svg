@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2faee"/><stop offset="1" stop-color="#bfe6d3"/></linearGradient>
+  <radialGradient id="glow" cx=".5" cy=".46" r=".5"><stop offset="0" stop-color="#fff" stop-opacity=".7"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <rect width="512" height="512" fill="url(#glow)"/>
+  <g transform="translate(256 262) scale(.74) translate(-262 -275)">
+  <defs>
+    <linearGradient id="L" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f9cddc"/><stop offset="1" stop-color="#e79fbe"/></linearGradient>
+    <linearGradient id="R" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a3b8f4"/><stop offset="1" stop-color="#7488e0"/></linearGradient>
+    <linearGradient id="RL" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8ee8d8"/><stop offset="1" stop-color="#5fd1c0"/></linearGradient>
+    <linearGradient id="RR" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#52bfb1"/><stop offset="1" stop-color="#349f94"/></linearGradient>
+    <radialGradient id="B" cx=".38" cy=".32" r=".75"><stop offset="0" stop-color="#7d6fae"/><stop offset=".55" stop-color="#4b4170"/><stop offset="1" stop-color="#2e2650"/></radialGradient>
+  </defs>
+  <!-- a little stone tower: two walls and a pointed roof, with the ball resting beside it -->
+  <path d="M106 236 256 322v170L106 406z" fill="url(#L)"/>
+  <path d="M406 236 256 322v170l150-86z" fill="url(#R)"/>
+  <path d="M106 236 256 322 256 58z" fill="url(#RL)"/>
+  <path d="M406 236 256 322 256 58z" fill="url(#RR)"/>
+  <path d="M106 236 256 322 406 236" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="6" stroke-linejoin="round"/>
+  <ellipse cx="420" cy="480" rx="46" ry="12" fill="#2e2650" opacity=".18"/>
+  <circle cx="420" cy="432" r="48" fill="url(#B)"/>
+  <circle cx="404" cy="414" r="11" fill="#fff" opacity=".55"/>
+  </g>
+</svg>

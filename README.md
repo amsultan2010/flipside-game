@@ -30,6 +30,8 @@ Three.js and the fonts load from CDNs (jsDelivr and Google Fonts), so the page n
 
 Import the repo in Vercel. `vercel.json` already sets everything up: it runs `npm run build` and serves the `dist` folder. You don't need to change any settings or add environment variables.
 
+**Analytics.** The page loads Vercel Web Analytics from `/_vercel/insights/script.js`. Turn it on once in the Vercel dashboard (the project's **Analytics** tab, then **Enable**), then redeploy. Page views are counted on every plan. The game also sends two custom events, `level_start` and `level_complete` (with the level, chapter, moves, par and hints used), which show up only on a Pro plan.
+
 ## How the code is laid out
 
 ```
@@ -38,6 +40,8 @@ src/
   game.js      the game: rendering, camera, input, animation, audio, screens
   surf.js      the surfaces as maths (strips, torus, knot, square tube, Klein bottle)
   logic.js     the puzzle rules and the solver; shared with the level tools
+public/        favicon, app icons and web manifest (copied into dist/ as they are)
+brand/         the icon artwork as SVG
 levels/
   levels.json  the 31 levels, with their par and a solution for each
   gen.js       random level generator, filtered by the solver
@@ -47,6 +51,7 @@ levels/
 scripts/
   build.mjs    stitches src/ and levels.json into dist/index.html
   check.mjs    verifies every level
+  make-icons.py  renders the icon PNGs and ICO from the SVGs (needs Python, Playwright, Pillow)
 ```
 
 `game.js` has three markers (`/*SURF*/`, `/*LOGIC*/`, `/*LEVELS*/`) that the build replaces with `surf.js`, `logic.js` and the level data, so the finished game is a single file.
