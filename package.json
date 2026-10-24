@@ -1,0 +1,14 @@
+{
+  "name": "flipside-game",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A calm puzzle game about rolling a ball across one-sided worlds.",
+  "type": "commonjs",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/check.mjs",
+    "levels": "node levels/build.js && node scripts/check.mjs",
+    "dev": "node scripts/build.mjs && npx --yes serve dist"
+  },
+  "engines": { "node": ">=18" }
+}
