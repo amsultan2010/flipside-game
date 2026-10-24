@@ -16,7 +16,7 @@ The ball keeps rolling until something stops it, so every level is about plannin
 
 ## Running it
 
-You need Node 18 or newer. There are no dependencies to install.
+You need Node 18 or newer. Run `npm install` once (the only dependency is `@vercel/analytics`).
 
 ```bash
 npm run build   # writes dist/index.html (one self-contained page)
@@ -30,7 +30,7 @@ Three.js and the fonts load from CDNs (jsDelivr and Google Fonts), so the page n
 
 Import the repo in Vercel. `vercel.json` already sets everything up: it runs `npm run build` and serves the `dist` folder. You don't need to change any settings or add environment variables.
 
-**Analytics.** The page loads Vercel Web Analytics from `/_vercel/insights/script.js`. Turn it on once in the Vercel dashboard (the project's **Analytics** tab, then **Enable**), then redeploy. Page views are counted on every plan. The game also sends two custom events, `level_start` and `level_complete` (with the level, chapter, moves, par and hints used), which show up only on a Pro plan.
+**Analytics.** The page uses Vercel Web Analytics through the `@vercel/analytics` package (`inject()` and `track()`), which the build inlines into the page. Turn it on once in the Vercel dashboard (the project's **Analytics** tab, then **Enable**), then redeploy. Page views are counted on every plan. The game also sends two custom events, `level_start` and `level_complete` (with the level, chapter, moves, par and hints used), which show up only on a Pro plan.
 
 ## How the code is laid out
 

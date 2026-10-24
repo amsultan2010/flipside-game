@@ -10,5 +10,10 @@
     "levels": "node levels/build.js && node scripts/check.mjs",
     "dev": "node scripts/build.mjs && npx --yes serve dist"
   },
-  "engines": { "node": ">=18" }
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
+  }
 }

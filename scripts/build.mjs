@@ -12,7 +12,12 @@ const page = read('src/page.html');
 const logic = read('src/logic.js').replace("if (typeof module !== 'undefined') module.exports = LOGIC;", '');
 // the game only needs what it draws; the stored solutions are for the checker
 const levels = JSON.parse(read('levels/levels.json')).map(({ sol, _g, _t, ...l }) => l);
+// @vercel/analytics (from npm) is inlined too, so the page stays one file and needs no bundler
+const va = read('node_modules/@vercel/analytics/dist/index.mjs')
+  .replace(/\/\/# sourceMappingURL=.*$/m, '')
+  .replace(/export \{[^}]*\};?/, 'return { inject, track };');
 const game = read('src/game.js')
+  .replace('/*ANALYTICS*/', () => `const VercelAnalytics = (() => {\n${va}\n})();`)
   .replace('/*SURF*/', () => read('src/surf.js'))
   .replace('/*LOGIC*/', () => logic)
   .replace('/*LEVELS*/', () => JSON.stringify(levels));
@@ -32,14 +37,12 @@ const html = `<!doctype html>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Flipside">
-<!-- Vercel Web Analytics: queue calls until the script loads -->
-<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+
 ${page.slice(0, cut).trim()}
 </head>
 <body>
 ${page.slice(cut).trim()}
 ${game.trim()}
-<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
 `;

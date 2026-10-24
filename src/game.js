@@ -1,6 +1,7 @@
 <script type="module">
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+/*ANALYTICS*/
 
 const $ = id => document.getElementById(id);
 const V3 = THREE.Vector3, TAU = Math.PI * 2, PI = Math.PI;
@@ -9,8 +10,11 @@ const lerp = (a, b, t) => a + (b - a) * t;
 const mod = (a, n) => ((a % n) + n) % n;
 const ease = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
 const coarse = matchMedia('(pointer: coarse)').matches;
-// Vercel Web Analytics custom events (page views are counted automatically; custom events need a Pro plan)
-const track = (name, data) => { try { window.va && window.va('event', { name, data }); } catch (_) {} };
+// Vercel Web Analytics, from the @vercel/analytics package (the build inlines it as VercelAnalytics).
+// inject() counts page views; track() sends custom events, which Vercel records on Pro plans.
+const localDev = /^(localhost|127\.0\.0\.1|)$/.test(location.hostname);
+try { VercelAnalytics.inject({ mode: localDev ? 'development' : 'production' }); } catch (_) {}
+const track = (name, data) => { try { VercelAnalytics.track(name, data); } catch (_) {} };
 const Y = new V3(0, 1, 0);
 const col = c => c instanceof THREE.Color ? c.clone() : new THREE.Color(c);
 
